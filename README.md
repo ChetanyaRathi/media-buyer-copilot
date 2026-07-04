@@ -2,7 +2,7 @@
 
 AI co-pilot for media buyers — turns cross-platform ad spend into grounded **scale / kill / watch** decisions, with the reasoning behind each call.
 
-**Demo:** DEMO_VIDEO_LINK_HERE
+
 **Stack:** FastAPI · LangGraph · React (Vite) · runs fully local on Ollama (Mistral 7B), or Gemini with one env var
 
 Drop in a raw ad export (Meta, Google, TikTok, Taboola — the messy CSV/XLSX you already download). The tool normalizes it, computes the metrics that matter, and an LLM pipeline recommends what to scale, kill, and watch — then critiques its own recommendations before showing them. Every call is backed by the numbers and a one-line rationale you can click into. No API keys, no billing: it runs on a local model out of the box.
