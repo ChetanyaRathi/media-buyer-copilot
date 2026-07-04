@@ -14,6 +14,16 @@ async function handle(response) {
   return response.json()
 }
 
+export async function health() {
+  try {
+    const res = await fetch(`${BASE}/health`)
+    if (!res.ok) throw new Error('Not ok')
+    return await res.json()
+  } catch (e) {
+    throw e
+  }
+}
+
 export async function analyze(files) {
   const form = new FormData()
   for (const file of files) form.append('files', file)

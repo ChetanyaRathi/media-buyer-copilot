@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react'
 import RowDetail from './RowDetail.jsx'
+import PlatformBadge from './PlatformBadge.jsx'
 
 const keyOf = (r) => `${r.platform}|${r.campaign}|${r.ad_set}`
 const num = (v, d = 2) => (v === null || v === undefined ? '—' : Number(v).toFixed(d))
@@ -25,7 +26,7 @@ export default function DecisionsTable({ decisions, metrics }) {
   }
 
   return (
-    <div className="fade">
+    <div className="fade fade-delay-2">
       <div className="section-head">
         <div className="micro">Recommendations · {rows.length}</div>
         <div className="filters">
@@ -37,45 +38,55 @@ export default function DecisionsTable({ decisions, metrics }) {
           </select>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Platform</th>
-            <th>Campaign / Ad set</th>
-            <th className="n">Spend</th>
-            <th className="n">ROAS</th>
-            <th className="n">CPA</th>
-            <th className="n">EPC</th>
-            <th className="n">3d trend</th>
-            <th>Call</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((d) => {
-            const m = metricMap[keyOf(d)] || {}
-            const k = keyOf(d)
-            return (
-              <Fragment key={k}>
-                <tr onClick={() => setOpen(open === k ? null : k)}>
-                  <td className="sub">{d.platform}</td>
-                  <td><div className="name">{d.ad_set}</div><div className="sub">{d.campaign}</div></td>
-                  <td className="n">{money(m.spend)}</td>
-                  <td className="n">{num(m.roas)}</td>
-                  <td className="n">{money(m.cpa)}</td>
-                  <td className="n">${num(m.epc)}</td>
-                  <td className="n">{trend(m.roas_trend_pct)}</td>
-                  <td><span className={`badge ${d.decision}`}>{d.decision}</span><span className="conf">{d.confidence}</span></td>
-                </tr>
-                {open === k && (
-                  <tr className="detail">
-                    <td colSpan="8"><RowDetail decision={d} metric={m} /></td>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Campaign / Ad set</th>
+              <th className="n">Spend</th>
+              <th className="n">ROAS</th>
+              <th className="n">CPA</th>
+              <th className="n">EPC</th>
+              <th className="n">3d trend</th>
+              <th>Call</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((d) => {
+              const m = metricMap[keyOf(d)] || {}
+              const k = keyOf(d)
+              return (
+                <Fragment key={k}>
+                  <tr onClick={() => setOpen(open === k ? null : k)}>
+                    <td><PlatformBadge platform={d.platform} /></td>
+                    <td><div className="name">{d.ad_set}</div><div className="sub">{d.campaign}</div></td>
+                    <td className="n">{money(m.spend)}</td>
+                    <td className="n">{num(m.roas)}</td>
+                    <td className="n">{money(m.cpa)}</td>
+                    <td className="n">${num(m.epc)}</td>
+                    <td className="n">{trend(m.roas_trend_pct)}</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span className={`decision-pill ${d.decision}`}>
+                          <span className="dot"></span>
+                          {d.decision}
+                        </span>
+                        <span className="conf">{d.confidence}</span>
+                      </div>
+                    </td>
                   </tr>
-                )}
-              </Fragment>
-            )
-          })}
-        </tbody>
-      </table>
+                  {open === k && (
+                    <tr className="detail">
+                      <td colSpan="8"><RowDetail decision={d} metric={m} /></td>
+                    </tr>
+                  )}
+                </Fragment>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

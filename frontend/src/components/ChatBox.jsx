@@ -25,7 +25,7 @@ export default function ChatBox({ context }) {
   }
 
   return (
-    <div className="chat fade">
+    <div className="chat fade fade-delay-3">
       <div className="micro">Ask the co-pilot</div>
       <div className="msgs">
         {messages.length === 0 && (
